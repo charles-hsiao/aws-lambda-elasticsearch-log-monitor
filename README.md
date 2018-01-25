@@ -5,7 +5,7 @@
 ## Introduction
   ElasticSearch provide [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search.html), [Aggregations API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations) to query logs query/aggregations easily.  
   By leverage these API, we can create a monitoring method by aggragate specific log pattern volume/aggregations. And send notification.  
-  In this project, we use Python to create AWS Lambda+DynamoDB to achieve serverless and flexible configuration log monitoring solution.(Lambda function create by [python-lambda](https://github.com/nficano/python-lambda))  
+  In this project, we use Python to create AWS Lambda+DynamoDB to achieve serverless and flexible configuration log monitoring solution. (Lambda function create by [python-lambda](https://github.com/nficano/python-lambda))  
   
 ## Get Started
 ### Create Monitor Item
