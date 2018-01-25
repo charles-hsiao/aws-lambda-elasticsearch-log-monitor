@@ -1,0 +1,16 @@
+region: ${AWS_REGION}
+
+function_name: monitor_lambda
+handler: service.handler
+# Need to create AWS IAM role, please reference https://github.com/nficano/python-lambda for more detail.
+role: Lambda_Monitor
+description: Lambda monitor leverage elasticsearch API
+
+# if access key and secret are left blank, boto will use the credentials
+# defined in the [default] section of ~/.aws/credentials.
+aws_access_key_id: ${AWS_ACCESS_KEY_ID}
+aws_secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+
+# dist_directory: dist
+timeout: 120
+memory_size: 512
