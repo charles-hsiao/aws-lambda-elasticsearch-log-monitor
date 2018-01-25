@@ -1,0 +1,90 @@
+{
+  "alarms": {
+    "alert": ">=0.1",
+    "warning": ">=0.05"
+  },
+  "enable": true,
+  "elk_env": "staging",
+  "formula": "${SignInFailed_Count}/${SignInTotal_Count}",
+  "monitor_id": "Sample-SignIn_FailedRate",
+  "notify": {
+    "slack": "https://${SLACK_WEB_HOOK_URL}"
+  },
+  "parameters": {
+    "SignInFailed_Count": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "@service": "sample"
+              }
+            },
+            {
+              "match": {
+                "@log_type": "sample_nginx_access"
+              }
+            },
+            {
+              "match": {
+                "@env_phase": "staging"
+              }
+            },
+            {
+              "range": {
+                "@timestamp": {
+                  "gt": "now-15m"
+                }
+              }
+            },
+            {
+              "match": {
+                "request_url": "/v1/account.login"
+              }
+            },
+            {
+              "match": {
+                "http_status_code": "403"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "SignInTotal_Count": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "@service": "sample"
+              }
+            },
+            {
+              "match": {
+                "@log_type": "sample_nginx_access"
+              }
+            },
+            {
+              "match": {
+                "@env_phase": "staging"
+              }
+            },
+            {
+              "range": {
+                "@timestamp": {
+                  "gt": "now-15m"
+                }
+              }
+            },
+            {
+              "match": {
+                "request_url": "/v1/account.login"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
