@@ -1,0 +1,66 @@
+{
+  "alarms": {
+    "alert": ">=2",
+    "warning": ">=1"
+  },
+  "elk_env": "staging",
+  "enable": true,
+  "formula": "%{aggregations.upstream_time.avg_value.value}",
+  "monitor_id": "Sample_API_NginxRespTime",
+  "notify": {
+    "slack": "https://${SLACK_WEB_HOOK_URL}"
+  },
+  "parameters": {
+    "aggregations.upstream_time.avg_value.value": {
+      "aggs": {
+        "upstream_time": {
+          "aggs": {
+            "avg_value": {
+              "avg": {
+                "field": "upstream_time"
+              }
+            }
+          },
+          "filter": {
+            "term": {
+              "@log_type": "sample_nginx_access"
+            }
+          }
+        }
+      },
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "@service": "sample"
+              }
+            },
+            {
+              "match": {
+                "@log_type": "sample_nginx_access"
+              }
+            },
+            {
+              "match": {
+                "@env_phase": "staging"
+              }
+            },
+            {
+              "range": {
+                "@timestamp": {
+                  "gt": "now-15m"
+                }
+              }
+            },
+            {
+              "match": {
+                "request_url": "/v1/sample.api"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
