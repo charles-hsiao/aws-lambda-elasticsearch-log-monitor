@@ -1,0 +1,55 @@
+{
+  "alarms": {
+    "alert": ">=5",
+    "warning": ">=1"
+  },
+  "enable": true,
+  "elk_env": "staging",
+  "formula": "${Invalid_HTTP_Method_Count}",
+  "monitor_id": "Sample-Invalid_HTTP_Method_Count",
+  "notify": {
+    "slack": "https://${SLACK_WEB_HOOK_URL}"
+  },
+  "parameters": {
+    "Invalid_HTTP_Method_Count": {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "@service": "sample"
+              }
+            },
+            {
+              "match": {
+                "@log_type": "sample_nginx_access"
+              }
+            },
+            {
+              "match": {
+                "@env_phase": "staging"
+              }
+            },
+            {
+              "range": {
+                "@timestamp": {
+                  "gt": "now-15m"
+                }
+              }
+            },
+            {
+              "match": {
+                "request_url": "/v1/sample.api"
+              }
+            },
+            {
+              "match": {
+                "http_status_code": "405"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
